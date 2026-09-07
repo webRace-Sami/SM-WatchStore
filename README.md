@@ -111,5 +111,5 @@ Open [http://localhost:3000](http://localhost:3000) (or configured port) in your
 
 ---
 
-## 📄 License
-Private & Proprietary — © 2026 **SM WatchStore**. All Rights Reserved.
+## 📄 Proprietary Rights & Ownership
+Private & Proprietary — © 2026 **SM WatchStore**. All software engineering, digital architecture, and intellectual property rights are exclusively reserved to **WebRace Co.**

@@ -230,27 +230,47 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Copyright */}
+        {/* Bottom Copyright & WebRace Co. Rights Reservation */}
         <div
           style={{
             borderTop: '1px solid rgba(255, 255, 255, 0.06)',
-            paddingTop: '20px',
+            paddingTop: '24px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             flexWrap: 'wrap',
-            gap: '12px',
-            fontSize: '0.78rem',
+            gap: '16px',
+            fontSize: '0.8rem',
             color: '#64748B',
           }}
         >
-          <p>© {new Date().getFullYear()} {settings?.companyName || 'SM WatchStore'}. All rights reserved. Registered Horological Trading.</p>
-          <div style={{ display: 'flex', gap: '16px' }}>
+          <div>
+            <p style={{ color: '#94A3B8', marginBottom: '4px' }}>
+              © {new Date().getFullYear()} <strong style={{ color: '#F8FAFC' }}>{settings?.companyName || 'SM WatchStore'}</strong>. All Rights Reserved.
+            </p>
+            <p style={{ fontSize: '0.75rem', color: '#64748B' }}>
+              Platform Architecture, Systems & Intellectual Property Exclusively Reserved to{' '}
+              <strong style={{ color: '#E5C365', fontWeight: 700 }}>WebRace Co.</strong>
+            </p>
+          </div>
+
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '14px',
+              fontSize: '0.76rem',
+              color: '#94A3B8',
+            }}
+          >
+            <span>
+              Engineered & Powered by <strong style={{ color: '#D4AF37' }}>WebRace Co.</strong>
+            </span>
+            <span>•</span>
             <span>No Material Refundable</span>
             <span>•</span>
-            <span>No COD Available</span>
-            <span>•</span>
-            <span>Vercel Optimized</span>
+            <span>Advance Payment Only</span>
           </div>
         </div>
       </div>
