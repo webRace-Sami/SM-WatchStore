@@ -1,0 +1,120 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String    @id @default(uuid())
+  username       String    @unique
+  email          String?   @unique
+  passwordHash   String
+  role           String    @default("CUSTOMER") // "ADMIN" or "CUSTOMER"
+  fullName       String
+  phone          String
+  secondaryPhone String?
+  address        String?
+  city           String?
+  postalCode     String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  orders         Order[]
+}
+
+model Watch {
+  id              String      @id @default(uuid())
+  title           String
+  brand           String
+  model           String
+  sku             String      @unique
+  price           Float
+  discountPrice   Float?
+  stockCount      Int         @default(1)
+  isAvailable     Boolean     @default(true)
+  category        String      @default("Luxury")
+  movement        String      @default("Automatic")
+  caseDiameter    String?
+  dialColor       String?
+  strapMaterial   String?
+  waterResistance String?
+  description     String
+  features        String?     // Stored as JSON string array
+  images          String      // Stored as JSON string array of image objects: [{ url, source, alt, isPrimary }]
+  isFeatured      Boolean     @default(false)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  orderItems      OrderItem[]
+}
+
+model Order {
+  id                    String      @id @default(uuid())
+  orderNumber           String      @unique
+  userId                String?
+  user                  User?       @relation(fields: [userId], references: [id])
+  customerName          String
+  customerPhone         String
+  customerEmail         String?
+  shippingAddress       String
+  city                  String
+  postalCode            String?
+  subtotal              Float
+  taxAmount             Float       @default(0)
+  courierFee            Float       @default(0)
+  courierDiscount       Float       @default(0)
+  totalAmount           Float
+  paymentType           String      @default("FULL") // "FULL" or "HALF"
+  advancePaid           Float       @default(0)
+  remainingBalance      Float       @default(0)
+  paymentStatus         String      @default("PENDING_VERIFICATION") // "PENDING_VERIFICATION", "VERIFIED", "FAILED"
+  orderStatus           String      @default("PENDING") // "PENDING", "CONFIRMED", "PACKED", "COURIER_ON_THE_WAY", "DELIVERED", "CANCELLED"
+  paymentProofUrl       String?
+  paymentNotes          String?
+  courierServiceName    String?     // e.g. "TCS Express", "Leopards Courier", "Trax Logistics"
+  courierTrackingNumber String?
+  adminNotes            String?
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+  items                 OrderItem[]
+}
+
+model OrderItem {
+  id         String   @id @default(uuid())
+  orderId    String
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  watchId    String?
+  watch      Watch?   @relation(fields: [watchId], references: [id])
+  watchTitle String
+  watchImage String?
+  price      Float
+  quantity   Int      @default(1)
+  total      Float
+}
+
+model StoreSettings {
+  id                      String   @id @default("default")
+  companyName             String   @default("SM WatchStore")
+  brandTagline            String   @default("Luxury Timepieces & Haute Horlogerie")
+  logoUrl                 String?
+  contactPhone            String   @default("+92 300 1234567")
+  whatsappNumber          String   @default("+92 300 1234567")
+  officialEmail           String   @default("samiullahnawaz942@gmail.com")
+  physicalAddress         String   @default("Showroom #14, Royal Luxury Plaza, Main Boulevard, Gulberg, Lahore, Pakistan")
+  city                    String   @default("Lahore")
+  googleMapsUrl           String   @default("https://maps.google.com")
+  isOpen                  Boolean  @default(true)
+  openingHoursText        String   @default("Mon - Sat: 11:00 AM - 10:00 PM | Sun: 03:00 PM - 09:00 PM")
+  gstTaxPercentage        Float    @default(0)
+  baseCourierPrice        Float    @default(600)
+  courierDiscountTier1Min Float    @default(25000)
+  courierDiscountTier1Rate Float   @default(50)
+  courierDiscountTier2Min Float    @default(50000)
+  courierDiscountTier2Rate Float   @default(100)
+  bankDetails             String   // JSON string of bank accounts & digital wallets (EasyPaisa, JazzCash, Raast)
+  strictReturnPolicy      String   @default("No material refundable. All timepieces undergo multi-point horological authentication prior to dispatch.")
+  noCodNotice             String   @default("Cash on Delivery (COD) is strictly unavailable. Full payment or 50% advance bank transfer required with WhatsApp screenshot verification.")
+  announcementBanner      String?  @default("🚚 Special Offer: 50% OFF Courier over Rs. 25,000 | 100% FREE Courier over Rs. 50,000!")
+  updatedAt               DateTime @updatedAt
+}
